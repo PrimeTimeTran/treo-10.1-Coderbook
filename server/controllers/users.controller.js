@@ -21,6 +21,9 @@ userController.create = catchAsync(async (req, res, next) => {
     email,
     password,
   });
+
+  await user.save()
+  
   const accessToken = await user.generateToken();
   return sendResponse(
     res,

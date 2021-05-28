@@ -48,43 +48,29 @@ const getSinglePost = (postId) => async (dispatch) => {
   }
 };
 
-const createReview = (postId, reviewText) => async (dispatch) => {
-  dispatch({ type: types.CREATE_REVIEW_REQUEST, payload: null });
-  try {
-    const res = await api.post(`/reviews/posts/${postId}`, {
-      content: reviewText,
-    });
-    dispatch({
-      type: types.CREATE_REVIEW_SUCCESS,
-      payload: res.data.data,
-    });
-  } catch (error) {
-    dispatch({ type: types.CREATE_REVIEW_FAILURE, payload: error });
-  }
-};
+// const createReview = (postId, reviewText) => async (dispatch) => {
+//   dispatch({ type: types.CREATE_REVIEW_REQUEST, payload: null });
+//   try {
+//     const res = await api.post(`/reviews/posts/${postId}`, {
+//       content: reviewText,
+//     });
+//     dispatch({
+//       type: types.CREATE_REVIEW_SUCCESS,
+//       payload: res.data.data,
+//     });
+//   } catch (error) {
+//     dispatch({ type: types.CREATE_REVIEW_FAILURE, payload: error });
+//   }
+// };
 
 const createPost = (body, images) => async (dispatch) => {
   dispatch({ type: types.CREATE_POST_REQUEST, payload: null });
   try {
-    // For uploading file manually
-    // const formData = new FormData();
-    // formData.append("title", title);
-    // formData.append("content", content);
-    // if (images && images.length) {
-    //   for (let index = 0; index < images.length; index++) {
-    //     formData.append("images", images[index]);
-    //   }
-    // }
-    // const res = await api.post("/posts", formData);
-
-    // Upload images using cloudinary already
     const res = await api.post("/posts", { body, images });
-
     dispatch({
-      payload: res.data.data,
+      payload: res.data,
       type: types.CREATE_POST_SUCCESS,
     });
-    dispatch(routeActions.redirect("__GO_BACK__"));
     toast.success("Post created");
   } catch (error) {
     dispatch({ type: types.CREATE_POST_FAILURE, payload: error });
@@ -147,10 +133,21 @@ const createPostReaction = (targetType, targetId, emoji) => async (dispatch) => 
   }
 };
 
+const createReaction = (postId) => async (dispatch) => {
+  // dispatch({ type: types.DELETE_POST_REQUEST, payload: null });
+  try {
+    // POST http://localhost:5000/api/posts/:id/reactions
+    const res = await api.post(`/posts/${postId}/reactions`, { type: 'Like'  });
+    console.log({ res });
+  } catch (error) {
+  }
+};
+
 export const postActions = {
   postsRequest,
   getSinglePost,
-  createReview,
+  // createReview,
+  createReaction,
   createPost,
   updatePost,
   deletePost,

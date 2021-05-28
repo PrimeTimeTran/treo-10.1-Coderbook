@@ -43,8 +43,10 @@ const postReducer = (state = initialState, action) => {
       return { ...state, loading: false };
 
     case types.CREATE_POST_SUCCESS:
-      return {
+      const newPosts = [payload, ...state.posts]
+       return {
         ...state,
+        posts: newPosts,
         loading: false,
       };
 
@@ -59,14 +61,14 @@ const postReducer = (state = initialState, action) => {
     case types.CREATE_REVIEW_REQUEST:
       return { ...state, submitLoading: true };
 
-    case types.CREATE_REVIEW_SUCCESS:
+    case types.CREATE_COMMENT_SUCCESS:
+      const idx = state.posts.findIndex((p) => p._id === payload._id);
+      state.posts[idx] = payload
+
       return {
         ...state,
+        posts: [...state.posts],
         submitLoading: false,
-        selectedBlog: {
-          ...state.selectedBlog,
-          reviews: [...state.selectedBlog.reviews, payload],
-        },
       };
 
     case types.POST_REACTION_SUCCESS:

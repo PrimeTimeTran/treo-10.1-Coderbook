@@ -133,14 +133,15 @@ const createPostReaction = (targetType, targetId, emoji) => async (dispatch) => 
   }
 };
 
-const createReaction = (postId) => async (dispatch) => {
-  // dispatch({ type: types.DELETE_POST_REQUEST, payload: null });
+const createReaction = (reactionableId, type, reactionableType) => async (dispatch) => {
   try {
-    // POST http://localhost:5000/api/posts/:id/reactions
-    const res = await api.post(`/posts/${postId}/reactions`, { type: 'Like'  });
+    const res = await api.post(`/posts/${reactionableId}/reactions`, {
+      type,
+      reactionableId,
+      reactionableType,
+    });
     console.log({ res });
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const postActions = {

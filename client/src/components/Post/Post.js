@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux";
 
 import avatar from "../../assets/avatar.png";
 
@@ -18,22 +18,21 @@ import { commentActions, postActions } from "../../redux/actions";
 
 import "./style.css";
 
-
 const Avatar = (props) => {
   return <img alt="profile" className="rounded-circle" src={avatar} />;
 };
 
 /* STEP 4 */
 const CommentForm = ({ postId }) => {
-  const dispatch = useDispatch()
-  const [body, setBody] = useState('')
+  const dispatch = useDispatch();
+  const [body, setBody] = useState("");
 
   const onSubmit = (e) => {
-    e.preventDefault()
-    dispatch(commentActions.create(body, postId))
+    e.preventDefault();
+    dispatch(commentActions.create(body, postId));
 
-    setBody('')
-  }
+    setBody("");
+  };
 
   return (
     <Form onSubmit={onSubmit}>
@@ -71,7 +70,7 @@ const PostComments = (props) => {
     <Card.Body>
       <ListGroup className="list-group-flush">
         {props.comments?.map((c) => {
-          return  <Comment key={c.id} {...c} />
+          return <Comment {...c} key={c._id} />;
         })}
       </ListGroup>
     </Card.Body>
@@ -85,13 +84,15 @@ const POST_ACTIONS = [
 ];
 
 const PostActionButton = ({ title, icon, postId, post }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const onClick = () => {
-    if (title === 'Like') {
-      console.log({ post });
-      dispatch(postActions.createReaction(postId));
+    if (title === "Like") {
+      dispatch(postActions.createReaction(postId, title, 'Post'));
     }
-  }
+    if (title === "Heart") {
+      dispatch(postActions.createReaction(postId, title, "Post"));
+    }
+  };
   return (
     <Button onClick={onClick} className="bg-light bg-white text-dark border-0">
       {" "}
@@ -106,17 +107,24 @@ const PostActionButton = ({ title, icon, postId, post }) => {
   );
 };
 
-const PostActions = ({post}) => {
+const PostActions = ({ post }) => {
   return (
     <ButtonGroup aria-label="Basic example">
       {POST_ACTIONS.map((a) => {
-        return <PostActionButton key={a.title} {...a} postId={post._id} post={post} />;
+        return (
+          <PostActionButton
+            key={a.title}
+            {...a}
+            postId={post._id}
+            post={post}
+          />
+        );
       })}
     </ButtonGroup>
   );
 };
 
-const PostReactions = ({post}) => {
+const PostReactions = ({ post }) => {
   return (
     <div className="d-flex justify-content-between my-2 mx-3">
       <p className="mb-0">{post.reactions.length}</p>
@@ -143,7 +151,7 @@ export default function Post({ post }) {
         variant="top"
         src="https://images.unsplash.com/photo-1529231812519-f0dcfdf0445f?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8dGFsZW50ZWR8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"
       />
-      <PostReactions post={post}/>
+      <PostReactions post={post} />
       <hr className="my-1" />
       <PostActions post={post} />
       <hr className="mt-1" />

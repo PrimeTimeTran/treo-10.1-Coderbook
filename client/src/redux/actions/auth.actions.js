@@ -1,6 +1,5 @@
 import * as types from "../constants/auth.constants";
 import api from "../api";
-import { routeActions } from "./route.actions";
 import { toast } from "react-toastify";
 
 const loginRequest = (email, password) => async (dispatch) => {

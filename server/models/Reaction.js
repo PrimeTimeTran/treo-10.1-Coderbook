@@ -3,15 +3,28 @@ const Schema = mongoose.Schema;
 
 const reactionSchema = Schema(
   {
-    body: { type: String, unique: false, default: "" },
-    type: ["Like", "Heart", "Care", "Laugh", "Angry", "Sad"],
-    owner: {
-      ref: "User",
+    type: {
+      type: String,
+      enum: {
+        required: true,
+        values: ["Like", "Heart", "Care", "Laugh", "Angry", "Sad"],
+        message: "{VALUE} is not supported",
+      },
+    },
+    reactionableId: {
       required: true,
       type: Schema.Types.ObjectId,
     },
-    post: {
-      ref: "Post",
+    reactionableType: {
+      type: String,
+      enum: {
+        required: true,
+        values: ["Post", "Comment", "Photo"],
+        message: "{VALUE} is not supported",
+      },
+    },
+    owner: {
+      ref: "User",
       required: true,
       type: Schema.Types.ObjectId,
     },

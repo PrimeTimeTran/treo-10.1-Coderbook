@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const Reaction = require("../models/Reaction");
@@ -54,7 +56,8 @@ postController.destroy = catchAsync(async (req, res) => {
 
 postController.getHomePagePosts = catchAsync(async (req, res) => {
   // const posts = await Post.find({}).sort({ _id: -1 });
-  const posts = await Post.find({}).sort({ _id: -1 })
+  const posts = await Post.find({})
+    .sort({ _id: -1 })
     .populate("owner")
     .populate({
       path: "reactions",
@@ -81,25 +84,36 @@ postController.createComment = catchAsync(async (req, res) => {
   const post = await Post.findById(req.params.id);
   await post.comments.unshift(comment._id);
   await post.save();
-  await post.populate({
-    path: "comments",
-    populate: {
-      path: "owner",
-    },
-  }).execPopulate()
+  await post
+    .populate({
+      path: "comments",
+      populate: {
+        path: "owner",
+      },
+    })
+    .execPopulate();
   return sendResponse(res, 200, true, { post }, null, "Login successful");
 });
 
 postController.createReaction = catchAsync(async (req, res) => {
   const reaction = await Reaction.create({
-    owner: req.userId,
     ...req.body,
-    post: req.params.id,
+    owner: req.userId,
   });
-  const post = await Post.findById(req.params.id);
-  await post.reactions.push(reaction._id)
-  await post.save()
-  return sendResponse(res, 200, true, { reaction }, null, "Login successful");
+
+  const reactionableKlass = await mongoose
+    .model(req.body.reactionableType)
+    .findById(req.params.id);
+  await reactionableKlass.reactions.push(reaction._id);
+  await reactionableKlass.save();
+  return sendResponse(
+    res,
+    200,
+    true,
+    { reactionableKlass, reaction },
+    null,
+    "Login successful",
+  );
 });
 
 module.exports = postController;

@@ -55,7 +55,7 @@ export default function HomePage() {
   
   useEffect(() => {
     dispatch(postActions.postsRequest());
-  }, []);
+  }, [dispatch]);
 
   if (!isAuthenticated) return <Redirect to="/auth" />;
 

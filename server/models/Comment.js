@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const commentSchema = Schema(
   {
-    reactions: { type: Array },
+    reactions: [{ type: Schema.Types.ObjectId, ref: "Reaction" }],
     body: { type: String, unique: false, default: "" },
     post: { ref: "Post", required: true, type: Schema.Types.ObjectId },
     owner: {

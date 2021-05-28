@@ -51,12 +51,21 @@ const CommentForm = ({ postId }) => {
   );
 };
 
-const Comment = ({ body, owner }) => {
+// 1. Comment body needs to listen for a click
+// 2. If comment clicked, dispatch action with comment id & 
+
+const Comment = ({ body, owner, _id }) => {
+  const dispatch = useDispatch()
+
+
   return (
     <ListGroupItem className="justify-content-start border-bottom-0 pr-0 py-0">
       <Avatar url={avatar} />
       <div className="col">
-        <div className="comment-bubble">
+        <div
+          className="comment-bubble"
+          onClick={() => dispatch(postActions.createReaction(_id, 'Like', 'Comment'))}
+        >
           <div className="font-weight-bold">{owner?.name}</div>
           <p>{body}</p>
         </div>
@@ -79,20 +88,17 @@ const PostComments = (props) => {
 
 const POST_ACTIONS = [
   { title: "Like", icon: "thumbs-up" },
-  { title: "Comment", icon: "comment" },
-  { title: "Share", icon: "share" },
+  { title: "Heart", icon: "comment" },
+  { title: "Wow", icon: "share" },
 ];
 
 const PostActionButton = ({ title, icon, postId, post }) => {
   const dispatch = useDispatch();
+
   const onClick = () => {
-    if (title === "Like") {
-      dispatch(postActions.createReaction(postId, title, 'Post'));
-    }
-    if (title === "Heart") {
-      dispatch(postActions.createReaction(postId, title, "Post"));
-    }
+    dispatch(postActions.createReaction(postId, title, "Post"));
   };
+
   return (
     <Button onClick={onClick} className="bg-light bg-white text-dark border-0">
       {" "}

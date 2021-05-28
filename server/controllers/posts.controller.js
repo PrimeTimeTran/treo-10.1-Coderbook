@@ -70,6 +70,9 @@ postController.getHomePagePosts = catchAsync(async (req, res) => {
       populate: {
         path: "owner",
       },
+      populate: {
+        path: "reactions",
+      },
     });
 
   return sendResponse(res, 200, true, { posts }, null, "Login successful");
@@ -95,25 +98,68 @@ postController.createComment = catchAsync(async (req, res) => {
   return sendResponse(res, 200, true, { post }, null, "Login successful");
 });
 
+// postController.createReaction = catchAsync(async (req, res) => {
+//   const reaction = await Reaction.create({
+//     ...req.body,
+//     owner: req.userId,
+//   });
+
+//   const reactionableKlass = await mongoose
+//     .model(req.body.reactionableType)
+//     .findById(req.params.id);
+//   await reactionableKlass.reactions.push(reaction._id);
+//   await reactionableKlass.save();
+//   return sendResponse(
+//     res,
+//     200,
+//     true,
+//     { reactionableKlass, reaction },
+//     null,
+//     "Login successful",
+//   );
+// });
 postController.createReaction = catchAsync(async (req, res) => {
   const reaction = await Reaction.create({
     ...req.body,
     owner: req.userId,
   });
 
-  const reactionableKlass = await mongoose
-    .model(req.body.reactionableType)
-    .findById(req.params.id);
-  await reactionableKlass.reactions.push(reaction._id);
-  await reactionableKlass.save();
-  return sendResponse(
-    res,
-    200,
-    true,
-    { reactionableKlass, reaction },
-    null,
-    "Login successful",
-  );
+  // let post, comment, photo, message
+  // console.log({ foo: req.body.reactionableType });
+  // if (req.body.reactionableType === 'Post') {
+  //   post = await Post.findById(req.params.id)
+  //   await post.reactions.push(reaction._id)
+  //   await post.save()
+  //   await reaction.save()
+  // }
+  // if (req.body.reactionableType === 'Comment') {
+  //   comment = await Comment.findById(req.params.id)
+  //   await comment.reactions.push(reaction._id)
+  //   await comment.save()
+  //   await reaction.save()
+  // }
+  // if (req.body.reactionableType === 'Photo') {
+  //   photo = await Photo.findById(req.params.id);
+  //   await photo.reactions.push(reaction._id)
+  //   await photo.save()
+  //   await reaction.save()
+  // }
+  // if (req.body.reactionableType === 'Message') {
+  //   message = await Message.findById(req.params.id);
+  //   await message.reactions.push(reaction._id);
+  //   await message.save();
+  //   await reaction.save()
+  // }
+
+    const reactionableKlass = await mongoose
+      .model(req.body.reactionableType)
+      .findById(req.params.id);
+
+    await reactionableKlass.reactions.push(reaction._id)
+    await reactionableKlass.save();
+    await reaction.save()
+
+  return sendResponse(res, 200, true, { reactionableKlass, reaction }, null, "Reacted!");
 });
 
 module.exports = postController;

@@ -147,7 +147,6 @@ const createReaction = (reactionableId, type, reactionableType) => async (dispat
 export const postActions = {
   postsRequest,
   getSinglePost,
-  // createReview,
   createReaction,
   createPost,
   updatePost,

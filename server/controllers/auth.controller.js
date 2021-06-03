@@ -28,6 +28,7 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
 });
 
 authController.hi = catchAsync(async (req, res, next) => {
+  
   return sendResponse(
     res,
     200,
@@ -35,6 +36,17 @@ authController.hi = catchAsync(async (req, res, next) => {
     { message: 'Hi', students: ['Orange', 'Black', 'Red', 'Blue', 'Crimson'] },
     null,
     "Hi production DB!"
+  );
+});
+authController.testDB = catchAsync(async (req, res, next) => {
+  const users = await User.find({})
+  return sendResponse(
+    res,
+    200,
+    true,
+    { message: "Hi", users },
+    null,
+    "Hi production DB!",
   );
 });
 

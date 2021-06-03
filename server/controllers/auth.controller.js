@@ -32,7 +32,7 @@ authController.hi = catchAsync(async (req, res, next) => {
     res,
     200,
     true,
-    { message: 'Hi' },
+    { message: 'Hi', students: ['Orange', 'Black', 'Red', 'Blue', 'Crimson'] },
     null,
     "Hi production DB!"
   );

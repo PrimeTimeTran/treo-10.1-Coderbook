@@ -27,4 +27,15 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
   );
 });
 
+authController.hi = catchAsync(async (req, res, next) => {
+  return sendResponse(
+    res,
+    200,
+    true,
+    { message: 'Hi' },
+    null,
+    "Hi production DB!"
+  );
+});
+
 module.exports = authController;

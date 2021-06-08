@@ -75,6 +75,11 @@ const authReducer = (state = initialState, action) => {
         accessToken: null,
         isAuthenticated: false,
       };
+    case types.SAVE_AVATAR_URL:
+      return {
+        ...state,
+        // hmmm?
+      };
     default:
       return state;
   }

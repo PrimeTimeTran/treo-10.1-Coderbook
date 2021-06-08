@@ -19,6 +19,7 @@ authMiddleware.loginRequired = (req, res, next) => {
           );
         }
       }
+      req.khoa = 'Majid'
       req.userId = payload._id;
     });
     next();

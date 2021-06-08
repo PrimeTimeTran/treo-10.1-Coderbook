@@ -26,7 +26,7 @@ const PublicNavbar = () => {
 
   const authLinks = (
     <Nav>
-      <Nav.Link href="/PrimeTimeTran">
+      <Nav.Link as={Link} to="/primetimetran">
         <div className="nav-icon">
           <FontAwesomeIcon icon="user" size="lg" />
         </div>

@@ -44,10 +44,13 @@ userController.read = async (req, res) => {
   }
 };
 
+// CRUD USER
+
 userController.update = async (req, res) => {
+  console.log({ khoi: req.body })
   await User.findByIdAndUpdate(
-    { _id: req.params.id },
-    { email: req.body.email },
+    { _id: req.userId },
+    { email: req.body.email, avatarUrl: req.body.avatarUrl },
     { new: true },
     (err, user) => {
       console.log({ err, user });
@@ -56,7 +59,7 @@ userController.update = async (req, res) => {
       } else {
         res.json(user);
       }
-    }
+    },
   );
 };
 

@@ -1,12 +1,28 @@
-import React from "react";
 
+// 1. Collect an image URL
+// 2. Save the image URL to the user resource/document/object
+// 3. Send the image URL to the frontend from the backend.
+
+import React, {useState} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Nav, Button, Container, ButtonGroup } from "react-bootstrap";
 
 import "./style.css";
+import { authActions } from "../../redux/actions/auth.actions";
 
 import Composer from "../../components/Composer/Composer";
 
 export default function ProfilePage() {
+  const userProfileAvatarUrl = useSelector((state) => state.auth.user.avatarUrl);
+  const [avatarUrl, setAvatarUrl] = useState('')
+
+  const dispatch = useDispatch()
+
+  const saveAvatarUrl = (e) => {
+    e.preventDefault()
+    dispatch(authActions.updateProfile('Khoi', avatarUrl));
+  }
+
   return (
     <div>
       <Row className="centered hero">
@@ -20,7 +36,7 @@ export default function ProfilePage() {
             <img
               alt="profile"
               className="position-absolute rounded-circle cover-profile-photo"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+              src={userProfileAvatarUrl}
             />
           </div>
         </Container>
@@ -88,32 +104,11 @@ export default function ProfilePage() {
             <h1>Sidebar</h1>
           </Col>
           <Col xs={7} className="posts-col">
+            <form onSubmit={saveAvatarUrl}>
+              <input onChange={(e) => setAvatarUrl(e.target.value)} />
+              <button>Save</button>
+            </form>
             <Composer />
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
-            <h1>Post</h1>
             <h1>Post</h1>
             <h1>Post</h1>
           </Col>
